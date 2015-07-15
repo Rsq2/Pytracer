@@ -3,10 +3,8 @@ from PIL import Image
 
 
 #TODO:
-#    implement reflectance
-#       bounce secondary rays on hit detections (figure out where to place the bounce)
-#    implement texture / specularity
-#    refill this list
+#       implement reflectance
+#           if Sphere.intersection == True, Ray.reflect(maxDepth)       
 
 
 #ABSTRACT:
@@ -17,7 +15,7 @@ from PIL import Image
 #    iterate
 #        for each object on the screen
 #            determine closest ray object and intersection
-#        if intersection exists
+#        if intersection exists < -----------------------------[YOU ARE HERE]
 #            for each light on the screen
 #                if the light is not in the shadow of another object
 #                    add this light's contriibution to the computed color
@@ -82,10 +80,10 @@ class Sphere( object ):
         elif p2 > 0.1 and p2 < p:
             p0 = p2
             returnval = True
-        
-        return returnval
+        return returnval        
         Intersect.distance = Ray.point + distance * Ray.normalize()
         
+
     def norm(self, n):
         return Coordinates(n - self.center)
 
@@ -93,8 +91,14 @@ class Ray( object ):
     def __init__(self, point, direction):
         self.point = point
         self.direction = direction
-        
-   
+    
+    def reflect(self, intersection, direction, reflectance):          
+        reflect = 2.0 * (direction * n)
+        newstart = intersection
+        newdir = direction - (reflect * n)
+        rayTest(newstart, newdir)
+        return # TODO: return color value for incident ray 
+
 class lightSource( object ):
     def __init__(self, center, intensity):
         self.center = center
@@ -106,21 +110,6 @@ class Intersection ( object ):
         self.distance = distance
         self.obj = obj
 
-#class Reflect( object ):  #TODO:Impl. Reflect as object? Or Reflect as Method?
-
-    #def __init__(self, obj, ray, world)
-        #self.ray = ray
-        #self.obj = obj
-        #self.world = objects[] 
-    #returns the color value for the incident ray
-    #'''
-    #return new Ray().render(world, obj.reflect(ray))
-
-    #def reflect(self, intersection, direction, reflectance):          
-        #reflect = 2.0 * (direction * n)
-        #newstart = intersection
-        #newdir = direction - (reflect * n)
-        #rayTest(newstart, newdir)
 
 def rayTest(ray, objects):
     closestIntersect = (Coordinates(0.0,0.0,0.0)
@@ -138,7 +127,7 @@ def scan(x, y):
     print num
         for num in range(y):
             finalColor = 0.0
-            rayTest(Coordinates(x, y, -1000.0), Objects[] #make an object list)
+            rayTest(Coordinates(x, y, -1000.0), Objects[])#make an object list)
             img.putpixel((x, y - num), (min(red * 255.0, 255.0), min(blue * 255.0, 255.0), min(green * 255.0, 255.0)))
             
 
