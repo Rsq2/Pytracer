@@ -43,7 +43,6 @@ class Coordinates( object ):
     def normalize(self):
         magnitude = self.magnitude()
         return Coordinates((self.x / magnitude), (self.y / magnitude), (self.z / magnitude))
-
     
     # method overrides so we can add / subtract / multiply / divide our vector and color tuples
     def __add__(self, b):
@@ -81,8 +80,7 @@ class Sphere( object ):
             p0 = p2
             returnval = True
         return returnval        
-        Intersect.distance = Ray.point + distance * Ray.normalize()
-        
+        Intersect.distance = Ray.point + distance * Ray.normalize() 
 
     def norm(self, n):
         return Coordinates(n - self.center)
@@ -92,12 +90,14 @@ class Ray( object ):
         self.point = point
         self.direction = direction
     
-    def reflect(self, intersection, direction, reflectance):          
+    def reflect(self, intersection, direction):          
         reflect = 2.0 * (direction * n)
         newstart = intersection
         newdir = direction - (reflect * n)
         rayTest(newstart, newdir)
+         
         return # TODO: return color value for incident ray 
+               # define n
 
 class lightSource( object ):
     def __init__(self, center, intensity):
@@ -110,7 +110,6 @@ class Intersection ( object ):
         self.distance = distance
         self.obj = obj
 
-
 def rayTest(ray, objects):
     closestIntersect = (Coordinates(0.0,0.0,0.0)
     for obj in objects:
@@ -119,15 +118,18 @@ def rayTest(ray, objects):
             closestIntersect = currentIntersect
         elif currentIntersect < closestIntersect
             closestIntersect = currentIntersect        
-        return closestIntersect
-        
+        return closestIntersect        
+
+class World()
+    def __init__(self)
+    def 
 
 def scan(x, y):
     for num in range(x):
     print num
         for num in range(y):
             finalColor = 0.0
-            rayTest(Coordinates(x, y, -1000.0), Objects[])#make an object list)
+            for obj in Objects[] 
+            collide = rayTest(Coordinates(x, y, -1000.0), Objects[])#make an object list)
+            if collide == True
             img.putpixel((x, y - num), (min(red * 255.0, 255.0), min(blue * 255.0, 255.0), min(green * 255.0, 255.0)))
-            
-
