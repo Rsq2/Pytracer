@@ -1,17 +1,18 @@
 import math
-from PIL import Image 
+from PIL import Image
+from Core import *
 
 #TODO:
 
 #ABSTRACT:
 #===========================================================================
 #for each pixel on the screen
-#    final color = 0
-#    castRay from starting point, direction
+#    final color = (0, 0, 0)
+#    castray from starting point, direction
 #    iterate
 #        for each object on the screen
 #            determine closest ray object and intersection
-#        if intersection exists < -----------------------------[YOU ARE HERE]
+#        if intersection exists
 #            for each light on the screen
 #                if the light is not in the shadow of another object
 #                    add this light's contriibution to the computed color
@@ -21,41 +22,59 @@ from PIL import Image
 #    increment depth until reflection factor = 0 or maximum depth is reached
 #============================================================================
 
-def getClosestIntersect(ray, objects):
+def getClosestIntersect(ray, objects, t):
     closestIntersect = (Vector(0.0,0.0,0.0)
     for obj in objects:
-        currentIntersect = obj.Intersection(ray)
+        currentIntersect, t = obj.Intersection(ray, t)
         if currentIntersect > 0.0 and closestIntersect < 0.0
             closestIntersect = currentIntersect
         elif currentIntersect < closestIntersect
-            closestIntersect = currentIntersect        
-        return closestIntersect        
-# set ray start z way back to assure intersection
+            closestIntersect = currentIntersect
+        return closestIntersect, t
 
-def getNormal(v1, v2):
+def getNormal(v1, v2)
     return Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z)
 
-def detectIntersection(self, ray, t):
-    # Constructing a Quadratic Equation
-        dist = (Vector(ray.origin) - Vector(self.center))
-        a = Vector(ray.direction).normalize() * dist
-        b = a * a - dist * dist + self.radius * self.radius
-        
-        if b < 0.0: # catch for non-intersection
-            return False
-        p1 = a - sqrt(b)
-        p2 = a + sqrt(b)
-    # Evaluating closest intersection using intersection points p0, p1, p2   
-        returnval = False
-        p0 = 0
-        if p1 > 0.1 and p1 < p:
-            p0 = p1
-            returnval = True
-        elif p2 > 0.1 and p2 < p:
-            p0 = p2
-            returnval = True
-        return returnval  
-# TODO: What the function, Batman!
+def checkShadows(intersect, norm)
+    Lights[] = Scene.getLights()
+    for light in Lights[]:
+        distance = getNormal(light.getDistance(), intersect)
+        if norm * distance <= 0.0:
+            continue
+        a = math.sqrt(distance * distance)
+        if a <= 0.0:
+            continue
+        childRay = Ray(newStart, distance * (1 \ a ))
+
+        isShadowed == False
+        isIntersecting, a = getClosestIntersect(childRay, Objects[])
+
+        if isIntersecting == True:
+            isShadowed == True
+            break
+        return isShadowed
+
+def reflect(ray, obj, t, reflectFactor):
+    newStart = ray.getStart() + ray.getDirection() * t
+    normal = getNormal(newStart, obj)
+    temp = normal * normal
+    if temp == 0.0
+        break
+    temp = 1.0 / math.sqrt(temp)
+    normal = normal * temp
+
+    currentTexture = obj.getTexture()
+    if currentTexture = None:
+        break
+
+    shadowed = testLights(newStart, normal)
+    if shadowed == False
+        lambert = (ray.getDirection() * normal) * reflectFactor)
+        color = obj.getTexture().getColor()
+        color = color * lambert
+
+        reflectFactor = reflectFactor * reflectance
+        return color, reflectFactor, childRay
 
 def scan(x, y):
     for num in range(x):
@@ -65,17 +84,20 @@ def scan(x, y):
             maxDepth = 10
             currentDepth = 0
             reflectFactor = 1
+            t = 2000.0
 
             # Set ray start depth WAY back to assure intersection
             viewRay = Ray( Vector(x, y, -1000.0), Vector(0, 0, 1.0) )
-            
-            while currentDepth < maxDepth or 0 < reflectFactor:
-                for obj in Objects[]:
 
-                    getClosestIntersect(, Objects[])
-                    for light in Lights[]
-                        if shadowTest(light, closestInt, obj) == False
-                            finalColor = finalColor + computedColor * reflectFactor
-                            reflectFactor = reflectFactor * reflectance
-                            img.putpixel(finalColor)
-                            currentDepth += 1
+            while currentDepth < maxDepth or 0 < reflectFactor:
+                for obj in World.objects:
+                    hit, t = getClosestIntersect(viewRay, Objects[])
+
+                    if hit == False:
+                        break
+                    else:
+                        color, reflectFactor, viewRay = reflect(viewRay, obj, t, reflectFactor)
+                        finalColor += color
+                    currentDepth += 1
+            img.putpixel(finalColor)
+
