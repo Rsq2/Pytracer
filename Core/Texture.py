@@ -14,4 +14,4 @@ class Flat ( Texture ):
     color = (255, 0, 0)
     reflectance = 100
     opacity = 1
-    
+

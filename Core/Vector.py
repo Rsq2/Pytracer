@@ -1,4 +1,4 @@
-from Math import sqrt
+from math import sqrt
 
 # Obligatory Vector Object for XYZ Tuples
 
