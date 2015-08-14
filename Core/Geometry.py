@@ -1,5 +1,10 @@
-from Core.Vector import Vector
-class Sphere( object ):
+from Core.Vector import *
+class Object:
+    def __init__(self, location):
+        self.location = location
+        intersects
+
+class Sphere( Object ):
     def __init__(self, center, radius, texture):
         self.center = center
         self.radius = radius
@@ -21,7 +26,7 @@ class Sphere( object ):
             t0 = a - sqrt(b)
             t1 = a + sqrt(b)
 
-        #   Evaluating closest intersection using intersection points p0, p1, p2
+        # Evaluating closest intersection using distances p0, p1, p2
             returnval = False
             t = 0
             if t1 > 0.1 and t1 < t:
@@ -33,7 +38,7 @@ class Sphere( object ):
             return returnval, t
 
 
-class Ray( object ):
+class Ray( Object ):
     def __init__(self, origin, direction):
         self.origin = origin
         self.direction = direction
@@ -44,7 +49,7 @@ class Ray( object ):
     def getDirection(self):
         return self.direction
 
-class Intersection ( object ):
+class Intersection ( Object ):
     def __init__(self, point, obj):
         self.point = point
         self.obj = obj
@@ -53,9 +58,9 @@ class Intersection ( object ):
     def getDistance(self):
         return self.distance
 
-class Light ( object ):
+class Light ( Object ):
     def __init__(self, position, intensity):
         self.position = position
         self.intensity = intensity
     def getPoint(self):
-        return self.point
+        return self.position

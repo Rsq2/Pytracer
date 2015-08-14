@@ -96,7 +96,7 @@ def scan(scene):
 
             while currentDepth < maxDepth or 0 < reflectFactor:
                 for obj in World.objects:
-                    hit, t = getClosestIntersect(viewRay, World.objects, t)
+                    hit, t = obj.Intersection(viewRay, t)
 
                     if hit == False:
                         break

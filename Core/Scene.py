@@ -1,10 +1,8 @@
 from Core.Geometry import *
 
-class Scene ( object ):
+class Scene ( Object ):
 
-    def __init__(self, x, y, objects, lights):
-        self.x = x
-        self.y = y
+    def __init__(self, objects, lights):
         self.objects = objects
         self.lights = lights
 
@@ -12,5 +10,3 @@ class Scene ( object ):
         return self.objects
     def getLights(self):
         return self.lights
-    def getDimensions(self):
-        return self.x, self.y
