@@ -11,8 +11,7 @@ class Texture:
         return self.opacity
 
 class Diffuse ( Texture ):
-    def __init__(self,
-    color = (255, 0, 0)
+    def __init__(self,color = (255, 0, 0)
     reflectance = 100
     opacity = 1
 

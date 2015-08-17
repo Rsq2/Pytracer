@@ -4,16 +4,20 @@ class Object:
         self.location = location
         intersects
 
+class Intersection ( Object ):
+    def __init__(self, point, obj):
+        self.point = point
+        self.obj = obj
+
+    def getDistance(self):
+        return self.distance
+
+
 class Sphere( Object ):
     def __init__(self, center, radius, texture):
         self.center = center
         self.radius = radius
         self.texture = texture
-
-    def getCenter(self):
-        return self.center
-    def getTexture(self):
-        return self.texture
 
     def Intersection(self, ray, t):
         # Constructing a Quadratic Equation
@@ -26,7 +30,6 @@ class Sphere( Object ):
             t0 = a - sqrt(b)
             t1 = a + sqrt(b)
 
-        # Evaluating closest intersection using distances p0, p1, p2
             returnval = False
             t = 0
             if t1 > 0.1 and t1 < t:
@@ -37,30 +40,36 @@ class Sphere( Object ):
                 returnval = True
             return returnval, t
 
-
 class Ray( Object ):
     def __init__(self, origin, direction):
         self.origin = origin
         self.direction = direction
 
-    def getStart(self):
-        return self.origin
+    def getClosestIntersect(ray, objects, t):
+        for obj in objects:
+            closestIntersect = Vector(0,0,0)
+            currentIntersect, t = obj.Intersection(ray, t)
+            if currentIntersect > 0.0 and closestIntersect < 0.0:
+                closestIntersect = currentIntersect
+            elif currentIntersect < closestIntersect:
+                closestIntersect = currentIntersect
+            return closestIntersect, t
 
-    def getDirection(self):
-        return self.direction
+    def cast(self, objects, lights, x, y):
+        for obj in World.objects:
+            hit = obj.Intersection(self.origin, self.direction)
+            
+            if hit == False:
+                return Ambient()
+            else:
+                color, reflectFactor, viewRay = reflect(viewRay, obj, t, reflectFactor)
+                finalColor += color
+            currentDepth += 1
 
-class Intersection ( Object ):
-    def __init__(self, point, obj):
-        self.point = point
-        self.obj = obj
-        self.distance = self.point - obj.center
 
-    def getDistance(self):
-        return self.distance
+    finalColor = (0.0, 0.0, 0.0) #RGB
+    maxDepth = 10
+    currentDepth = 0
+    reflectFactor = 1
+    t = 2000.0
 
-class Light ( Object ):
-    def __init__(self, position, intensity):
-        self.position = position
-        self.intensity = intensity
-    def getPoint(self):
-        return self.position
