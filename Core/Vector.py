@@ -21,6 +21,9 @@ class Vector( Object ):
     def __abs__(self):
         return sqrt(sum(map(lambda x: x**2, list(self))))
 
+    def normalize(self):
+        return self.scale(1/abs(self)) 
+
     def scale(self, other):
         return Vector(self.x * other, self.y * other, self.z * other)
 
@@ -55,7 +58,7 @@ class Color:
             return Color(self.r * other.r, self.g * other.g, self.b * other.b)
         return Color(self.r * other, self.g * other, self.b * other)
     def __pow__(self, other):
-        kapow = map(lambda x: ((x/255)**a)/255, list(self))
+        kapow = map(lambda x: ((x/255)**other)/255, list(self))
         return Color(kapow[0], kapow[1], kapow[2])
 
     def __div__(self, other):

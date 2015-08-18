@@ -61,15 +61,15 @@ class Camera( Object ):
         image = img.new("RGB", (self.width, self.height), tuple(Ambient()))
         for currentX in range(x):
             for currentY in range(y):
-                viewRay = Ray(self.location, Vector(0,0,1.0)).cast(objects, lights)
-                image.putpixel(finalColor)
+                viewRay = Ray(self.location, Vector(0,0,1.0)).render(objects, lights)
+                
+                image.putpixel((x, y), tuple(viewRay))
 
 # Place Objects Into Scene Here
 class Ambient(Color):
     def __init__(self):
         Color.__init__(self, 255, 255, 255)
 
-#TODO: Implement camera
 objects = []
 objects.append( Sphere( Vector( 2, 0, -10), 3, Diffuse))
 

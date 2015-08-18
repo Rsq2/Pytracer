@@ -15,57 +15,46 @@ class Intersection ( Object ):
 
 class Sphere( Object ):
     def __init__(self, center, radius, texture):
-        self.center = center
+        Object.__init__(self, location)
         self.radius = radius
         self.texture = texture
 
-    def Intersection(self, ray, t):
+    def intersection(self, rayOrigin, rayDirection):
         # Constructing a Quadratic Equation
-            dist = (ray.origin - self.center)
-            a = ray.getDirection() * dist
-            b = a * a - dist * dist + self.radius * self.radius
+        dist = (self.location - rayOrigin)
+        a = rayDirection.normalize() * dist
+        b = (self.radius ** 2) - (abs(dist)**2 - a **2)
 
-            if b < 0.0: # catch for non-intersection
-                return False, t
-            t0 = a - sqrt(b)
-            t1 = a + sqrt(b)
+        if b < 0.0: # Doesn't Intersect
+            return False
+        
+        else:    
+            c = a - sqrt(b)
+            if <= 0:
+                return False
+            intersect = rayOrigin + rayDirection.normalize().scale(c)
+            return (intersect, self.texture, self)
 
-            returnval = False
-            t = 0
-            if t1 > 0.1 and t1 < t:
-                t = t0
-                returnval = True
-            elif t1 > 0.1 and t0 < t:
-                t = t1
-                returnval = True
-            return returnval, t
+    def refract_ray(self, rayOrigin, intersect, 
+
+
+    def normal(self, intersect)
+        return (intersect - self.location).normalize()
+
 
 class Ray( Object ):
     def __init__(self, origin, direction):
         self.origin = origin
         self.direction = direction
 
-    def getClosestIntersect(ray, objects, t):
-        for obj in objects:
-            closestIntersect = Vector(0,0,0)
-            currentIntersect, t = obj.Intersection(ray, t)
-            if currentIntersect > 0.0 and closestIntersect < 0.0:
-                closestIntersect = currentIntersect
-            elif currentIntersect < closestIntersect:
-                closestIntersect = currentIntersect
-            return closestIntersect, t
-
-    def cast(self, objects, lights, x, y):
-        for obj in World.objects:
-            hit = obj.Intersection(self.origin, self.direction)
-            
-            if hit == False:
-                return Ambient()
-            else:
-                color, reflectFactor, viewRay = reflect(viewRay, obj, t, reflectFactor)
-                finalColor += color
-            currentDepth += 1
-
+    def render(self, obj, lights, x, y):    
+        hit = obj.Intersection(self.origin, self.direction)
+        if hit == False:
+            return Ambient()
+        intersect, texture, normal = hit
+        if intersect == self.origin: # catch for ray going literally nowhere
+            return Color(0, 0, 0)
+        return texture.computeColor(self.origin, intersect, normal, obj, lights) 
 
     finalColor = (0.0, 0.0, 0.0) #RGB
     maxDepth = 10

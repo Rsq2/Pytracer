@@ -20,4 +20,4 @@ class Specular ( Texture ):
 class Transparent ( Texture ):
 
 class Checkers ( Texture ):
-
+#TODO: IMPLEMENT "computeColor" for all these
