@@ -1,27 +1,24 @@
-from Core.Vector import *
+import Core.Vector
+
 class Object:
     def __init__(self, location):
         self.location = location
-        intersects
 
 class Intersection ( Object ):
-    def __init__(self, point, obj):
-        self.point = point
+    def __init__(self, rayOrigin,  obj):
+        Object.__init__(self, location)
+        self.rayOrigin = rayOrigin
         self.obj = obj
 
-    def getDistance(self):
-        return self.distance
-
-
 class Sphere( Object ):
-    def __init__(self, center, radius, texture):
+    def __init__(self, radius, texture):
         Object.__init__(self, location)
         self.radius = radius
         self.texture = texture
 
     def intersection(self, rayOrigin, rayDirection):
         # Constructing a Quadratic Equation
-        dist = (self.location - rayOrigin)
+        dist = self.location - rayOrigin
         a = rayDirection.normalize() * dist
         b = (self.radius ** 2) - (abs(dist)**2 - a **2)
 
@@ -30,17 +27,16 @@ class Sphere( Object ):
         
         else:    
             c = a - sqrt(b)
-            if <= 0:
+            if c <= 0.0:
                 return False
             intersect = rayOrigin + rayDirection.normalize().scale(c)
             return (intersect, self.texture, self)
 
-    def refract_ray(self, rayOrigin, intersect, 
-
-
-    def normal(self, intersect)
+    def normal(self, intersect):
         return (intersect - self.location).normalize()
 
+    def shadow(self, intersect, direction):
+        return max([direction.normalize() * (intersect - self.location).normalize(), 0])
 
 class Ray( Object ):
     def __init__(self, origin, direction):
@@ -54,11 +50,10 @@ class Ray( Object ):
         intersect, texture, normal = hit
         if intersect == self.origin: # catch for ray going literally nowhere
             return Color(0, 0, 0)
-        return texture.computeColor(self.origin, intersect, normal, obj, lights) 
+        return texture.computeColor(self.origin, intersect, normal, obj, lights)
 
-    finalColor = (0.0, 0.0, 0.0) #RGB
-    maxDepth = 10
-    currentDepth = 0
-    reflectFactor = 1
-    t = 2000.0
-
+class Light ( Object ):
+    def __init__(self, color, intensity):
+        Object.__init__(self, location)
+        self.color = color
+        self.intensity = intensity

@@ -1,8 +1,8 @@
 from math import sqrt
-from Core.Geometry import Object
+
 # Obligatory Vector Object for XYZ Tuples
 
-class Vector( Object ):
+class Vector:
     def __init__(self, x, y, z):
         self.x = x
         self.y = y
@@ -33,12 +33,16 @@ class Vector( Object ):
     def magnitude(self):
         return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
 
+    #def distance(self, other):
+        #if not isinstance(other, Vector):
+            #raise TypeError
+        #return abs(self - other)
+    
 class Color:
-    def __init__(self, r, g, b, a = 0):
+    def __init__(self, r, g, b):
         self.r = int(r)
         self.g = int(g)
         self.b = int(b)
-        self.a = 0
     def __getitem__(self, i):
         if i == 0:
             return self.r
@@ -46,15 +50,13 @@ class Color:
             return self.g
         elif i == 2:
             return self.b
-        elif i == 3:
-            return self.a
         else:
             raise IndexError
 
     def __add__(self, other):
         return Color(self.r + other.r, self.g + other.g, self.b + other.b)
     def __mul__(self, other):
-        if isinstance(other, Color)
+        if isinstance(other, Color):
             return Color(self.r * other.r, self.g * other.g, self.b * other.b)
         return Color(self.r * other, self.g * other, self.b * other)
     def __pow__(self, other):
