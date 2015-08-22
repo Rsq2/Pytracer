@@ -3,38 +3,48 @@ from Core.Geometry import *
 from Core.Texture import *
 from Core.Vector import *
 
+import pdb
+
 class Camera( Object ):
-    def init(self, loc, aim, viewPane):
-        Object.__init__(self, loc)
-        self.width = viewPane[1]
-        self.height = viewPane[2]
+    def init(self, location, direction):
+        Object.__init__(self, location)
+        self.direction = direction
+        self.width = 1920
+        self.height = 1080
 
     def scan(self, objects, lights):
         image = img.new("RGB", (self.width, self.height), tuple(Ambient()))
         for currentX in range(self.width):
             for currentY in range(self.height):
-                viewRay = Ray(self.location, Vector(0,0,1.0)).render(objects, lights)
+                viewRay = Ray(Vector(currentX, currentY, -1000), self.direction).render(objects, lights)
                 image.putpixel((currentX, currentY), tuple(viewRay))
         image.save("trace.png", "png")
 
 # Place Objects Into Scene Here
-class Ambient(Color):
+class Ambient( Color ):
     def __init__(self):
-        Color.__init__(self, 255, 255, 255)
+        Color.__init__(self, 0, 0, 0)
 
-size = [1920, 1080]
+if __name__ == "__main__":
+    objects = []
+    objects.extend((
+        Sphere(
+            Vector(2, 0, -10), 2, 
+            Diffuse(Color(25, 25, 255), .25)),
 
-objects = []
-objects.append(
-        Sphere ( Vector(2, 0, -10), 4, (
-            Diffuse ((Color(25, 25, 255)), .25))
-        )
-    )
+        Sphere (
+            Vector(-2, -2, -8), 3, 
+            Diffuse(Color(255, 25, 25), .25))
 
-lights = []
-lights.append( 
-        Light( Vector( 5, 10, 0), Color(100, 255, 100), 10)
-    )
+    ))
 
-camera = Camera(Vector(0,0,0), Vector(0, 1, 2), size)
-camera.scan(objects, lights)
+    lights = []
+    lights.extend(( 
+        Light( 
+            Vector(-5, 10, 0), Color(200, 255, 200), 2),
+        Light( 
+            Vector(0, 10, -10), Color(200, 200, 255), 10)
+    ))
+    pdb.set_trace()
+    camera = Camera(Vector(0, 0, 0), Vector(0, 0, 1))
+    camera.scan(objects, lights)

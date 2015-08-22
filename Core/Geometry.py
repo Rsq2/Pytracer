@@ -11,7 +11,7 @@ class Intersection ( Object ):
         self.obj = obj
 
 class Sphere( Object ):
-    def __init__(self, radius, texture):
+    def __init__(self, location, radius, texture):
         Object.__init__(self, location)
         self.radius = radius
         self.texture = texture
@@ -53,7 +53,7 @@ class Ray( Object ):
         return texture.computeColor(self.origin, intersect, normal, obj, lights)
 
 class Light ( Object ):
-    def __init__(self, color, intensity):
+    def __init__(self, location, color, intensity):
         Object.__init__(self, location)
         self.color = color
         self.intensity = intensity

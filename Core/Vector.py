@@ -65,3 +65,8 @@ class Color:
 
     def __div__(self, other):
         return self * (1/other)
+
+# TODO: Restructure hit data into an object class to cut down on passed variables
+class Hit( Object ):
+    def __init__(self, otherstuff...)
+
