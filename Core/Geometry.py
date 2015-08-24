@@ -1,4 +1,7 @@
-import Core.Vector
+from Core.Vector import *
+from Core.Texture import *
+
+import pdb
 
 class Object:
     def __init__(self, location):
@@ -19,6 +22,9 @@ class Sphere( Object ):
     def intersection(self, rayOrigin, rayDirection):
         # Constructing a Quadratic Equation
         dist = self.location - rayOrigin
+        
+        pdb.set_trace()
+
         a = rayDirection.normalize() * dist
         b = (self.radius ** 2) - (abs(dist)**2 - a **2)
 
@@ -36,21 +42,22 @@ class Sphere( Object ):
         return (intersect - self.location).normalize()
 
     def shadow(self, intersect, direction):
-        return max([direction.normalize() * (intersect - self.location).normalize(), 0])
+        
 
 class Ray( Object ):
     def __init__(self, origin, direction):
         self.origin = origin
         self.direction = direction
 
-    def render(self, obj, lights, x, y):    
-        hit = obj.Intersection(self.origin, self.direction)
-        if hit == False:
-            return Ambient()
-        intersect, texture, normal = hit
-        if intersect == self.origin: # catch for ray going literally nowhere
-            return Color(0, 0, 0)
-        return texture.computeColor(self.origin, intersect, normal, obj, lights)
+    def render(self, obj, lights):    
+        for each in obj:
+            hit = each.intersection(self.origin, self.direction)
+            if hit == False:
+                return Ambient()
+            intersect, texture, normal = hit
+            if intersect == self.origin: # catch for ray going literally nowhere
+                return Color(0, 0, 0)
+            return texture.computeColor(self.origin, intersect, normal, obj, lights)
 
 class Light ( Object ):
     def __init__(self, location, color, intensity):

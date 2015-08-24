@@ -15,7 +15,7 @@ class Diffuse ( Texture ):
     def computeColor(self, rayOrigin, intersect, obj, objects, lights):
         finalcolor = Color (0, 0, 0)
 
-        #TODO: Refactor into testLights(texture, ...) with texture.applyLightingModel(hitdata)
+        #TODO: Refactor into testLights(texture, hitdata) with texture.applyLightingModel(hitdata)
         for light in lights:
             newDir = (light.location - intersect).normalize()
             hit = objects.intersection(intersect, newDir, obj)

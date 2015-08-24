@@ -7,6 +7,15 @@ class Vector:
         self.x = x
         self.y = y
         self.z = z
+    def __getitem__(self, i):
+        if i == 0:
+            return self.x
+        if i == 1:
+            return self.y
+        if i == 2:
+            return self.z
+        else:
+            raise IndexError
 
     def __add__(self, other):
         return Vector(self.x + other.x, self.y + other.y, self.z + other.z)
@@ -67,6 +76,7 @@ class Color:
         return self * (1/other)
 
 # TODO: Restructure hit data into an object class to cut down on passed variables
-class Hit( Object ):
-    def __init__(self, otherstuff...)
+class Hit:
+    def __init__(self, otherstuff):
+        pass
 
