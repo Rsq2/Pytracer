@@ -1,6 +1,5 @@
 from Core.Vector import *
 from Core.Texture import *
-
 import pdb
 
 class Object:
@@ -20,17 +19,15 @@ class Sphere( Object ):
         self.texture = texture
 
     def intersection(self, rayOrigin, rayDirection):
-        # Constructing a Quadratic Equation
+        # Solve for 't'
         dist = self.location - rayOrigin
-        
-        pdb.set_trace()
-
         a = rayDirection.normalize() * dist
-        b = (self.radius ** 2) - (abs(dist)**2 - a **2)
+        pdb.set_trace()
+        b = (self.radius ** 2) - (abs(dist)**2 - a ** 2)
 
         if b < 0.0: # Doesn't Intersect
             return False
-        
+
         else:    
             c = a - sqrt(b)
             if c <= 0.0:
@@ -42,7 +39,7 @@ class Sphere( Object ):
         return (intersect - self.location).normalize()
 
     def shadow(self, intersect, direction):
-        
+        return max([direction.normalize() * (intersect - self.location).normalize(), 0])
 
 class Ray( Object ):
     def __init__(self, origin, direction):

@@ -39,9 +39,6 @@ class Vector:
     def cross(self, other):
         return Vector(self.y * other.z - self.z * other.y, self.x * other.z - self.z * other.x, self. x * other.y - self.y * other.x)
 
-    def magnitude(self):
-        return sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
-
     #def distance(self, other):
         #if not isinstance(other, Vector):
             #raise TypeError
